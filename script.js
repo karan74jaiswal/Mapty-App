@@ -128,10 +128,15 @@ class App {
       }
     );
   }
-  _descendingSortedWorkouts(workouts) {
+  _descendingSortedWorkouts(workouts, sortBy) {
     return workouts.sort(
-      ({ distance: distance1 }, { distance: distance2 }) =>
-        distance1 - distance2
+      (
+        { distance: distance1, duration: duration1 },
+        { distance: distance2, duration: duration2 }
+      ) => {
+        if (sortBy === 'distance') return distance1 - distance2;
+        if (sortBy === 'duration') return duration1 - duration2;
+      }
     );
   }
   _getCurrentPosition() {
@@ -334,7 +339,7 @@ class App {
     }
   }
   _featureButtonsVisiblity() {
-    if (this.#workouts.length > 0) featureBtns.style.display = 'block';
+    if (this.#workouts.length > 0) featureBtns.style.display = 'flex';
     else featureBtns.style.display = 'none';
   }
   _setWorkoutDescription({ type, date }) {
