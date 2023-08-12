@@ -220,7 +220,10 @@ a:visited {
 }
 .feature-btns {
   margin-bottom: 2rem;
-  display: none;
+  display: flex;
+  justify-content: space-between;
+  /* gap: 30px; */
+  /* align-items: center; */
 }
 
 .remove-all-btn {
@@ -237,4 +240,24 @@ a:visited {
 
 .remove-all-btn:hover {
   background-color: red;
+}
+
+.sort__input--type {
+  width: 30%;
+  padding: 0.3rem 0.3rem;
+  font-family: inherit;
+  font-size: 1.4rem;
+  border: none;
+  border-radius: 3px;
+  background-color: var(--color-light--3);
+  transition: all 0.2s;
+}
+
+.sorting-input {
+  display: flex;
+}
+
+.sorting-input .form__label {
+  flex: 0 0 30%;
+  align-self: center;
 }
