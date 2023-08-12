@@ -7,7 +7,8 @@ const inputDistance = document.querySelector('.form__input--distance');
 const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
-let map, mapEvent;
+const featureBtns = document.querySelector('.feature-btns');
+const removeAllbtn = document.querySelector('.remove-all-btn');
 
 class Workout {
   id = Date.now().toString().slice(-10);
@@ -77,6 +78,9 @@ class App {
 
     // Centering Map According to Workout marker
     containerWorkouts.addEventListener('click', this._centeringMap.bind(this));
+
+    // Feature Buttons Functionalities
+    featureBtns.addEventListener('click', this._removeAllWorkouts.bind(this));
   }
   _getCurrentPosition() {
     // Getting Current Location
@@ -145,6 +149,9 @@ class App {
     }
     // Pushing our new workout to workouts array
     this.#workouts.push(workout);
+
+    // Visibility of Feature Buttons
+    this._featureButtonsVisiblity();
 
     // Hiding the map
     this._hideForm();
@@ -251,6 +258,7 @@ class App {
     const storedWorkouts = JSON.parse(localStorage.getItem('workouts'));
     if (!storedWorkouts) return;
     this.#workouts = storedWorkouts;
+    this._featureButtonsVisiblity();
   }
 
   _centeringMap(e) {
@@ -261,7 +269,22 @@ class App {
     );
     this.#map.setView(workout.coords, 13);
   }
-
+  _removeAllWorkouts(e) {
+    const clicked = e.target;
+    if (!clicked.closest('.remove-all-btn')) return;
+    this._clearLocalStorage();
+    // featureBtns.style.display = 'none';
+  }
+  _clearLocalStorage() {
+    if (localStorage.getItem('workouts')) {
+      localStorage.removeItem('workouts');
+      location.reload();
+    }
+  }
+  _featureButtonsVisiblity() {
+    if (this.#workouts.length > 0) featureBtns.style.display = 'block';
+    else featureBtns.style.display = 'none';
+  }
   _setWorkoutDescription({ type, date }) {
     return `${type === 'running' ? 'Running' : 'Cycling'} on ${
       this.#month[new Date().getMonth()]
