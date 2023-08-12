@@ -81,6 +81,58 @@ class App {
 
     // Feature Buttons Functionalities
     featureBtns.addEventListener('click', this._removeAllWorkouts.bind(this));
+    featureBtns.addEventListener('change', this._sortWorkoutList.bind(this));
+  }
+  _sortWorkoutList(e) {
+    let sortedWorkouts = [...this.#workouts];
+    const sortValue = e.target.value;
+
+    // Clearing the current Showing Workouts from the list
+    document.querySelectorAll('.workout').forEach(workout => workout.remove());
+    if (sortValue === 'all') sortedWorkouts = [...this.#workouts];
+    if (sortValue === 'distance--ascending') {
+      sortedWorkouts = this._ascendingSortedWorkouts(
+        sortedWorkouts,
+        'distance'
+      );
+    }
+    if (sortValue === 'distance--descending') {
+      sortedWorkouts = this._descendingSortedWorkouts(
+        sortedWorkouts,
+        'distance'
+      );
+    }
+    if (sortValue === 'duration--ascending') {
+      sortedWorkouts = this._ascendingSortedWorkouts(
+        sortedWorkouts,
+        'duration'
+      );
+    }
+    if (sortValue === 'duration--descending') {
+      sortedWorkouts = this._descendingSortedWorkouts(
+        sortedWorkouts,
+        'duration'
+      );
+    }
+    sortedWorkouts.forEach(workout => this._renderWorkoutOnList(workout));
+  }
+
+  _ascendingSortedWorkouts(workouts, sortBy) {
+    return workouts.sort(
+      (
+        { distance: distance1, duration: duration1 },
+        { distance: distance2, duration: duration2 }
+      ) => {
+        if (sortBy === 'distance') return distance2 - distance1;
+        if (sortBy === 'duration') return duration2 - duration1;
+      }
+    );
+  }
+  _descendingSortedWorkouts(workouts) {
+    return workouts.sort(
+      ({ distance: distance1 }, { distance: distance2 }) =>
+        distance1 - distance2
+    );
   }
   _getCurrentPosition() {
     // Getting Current Location

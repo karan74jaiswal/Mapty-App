@@ -252,7 +252,10 @@ a:visited {
   background-color: var(--color-light--3);
   transition: all 0.2s;
 }
-
+.sort__input--type:focus {
+  outline: none;
+  background-color: #fff;
+}
 .sorting-input {
   display: flex;
 }
